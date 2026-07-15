@@ -13,22 +13,4 @@ public class Controller_Inimigo {
 		
 	}
 	
-	public int resultadoAtaque() {
-		
-		return inimigo.atacar();
-	}
-	
-	public boolean semVida() {
-		
-		if(inimigo.getVida() <= 0) {
-			
-			return true;
-		}
-		
-		else {
-			
-			return false;
-		}
-	}
-
 }

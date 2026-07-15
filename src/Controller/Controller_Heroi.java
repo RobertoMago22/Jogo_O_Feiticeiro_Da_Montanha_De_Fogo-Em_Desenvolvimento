@@ -2,6 +2,9 @@ package Controller;
 
 import Model.Heroi;
 import Model.Item;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 
 public class Controller_Heroi {
 	
@@ -13,57 +16,33 @@ public class Controller_Heroi {
 		
 	}
 	
-	public int resultadoAtaque() {
-		
-		return heroi.atacar();
+	public Heroi getHeroi() {
+		return heroi;
 	}
 	
-	public boolean semVida() {
-		
-		if(heroi.getVida() <= 0) {
-			
-			return true;
-		}
-		
-		else {
-			
-			return false;
-		}
+	public SimpleDoubleProperty vidaAtual() {
+		return heroi.vidaAtualProperty();
 	}
 	
-	public void adicionarItem(String nome, int unidade) {
-		
-		Item item = new Item(nome, unidade);
-		
-		heroi.adicionarItem(item);
-		
+	public SimpleDoubleProperty vidaMax() {
+		return heroi.vidaMaxProperty();
 	}
 	
-	public void excluirItem(Item item) {
-		
-		//heroi.excluirItem(item);
-		
+	public SimpleStringProperty nome() {
+		return heroi.nomeProperty();
 	}
 	
-	public boolean usarMoedas(int valor) {
-		
-		if(heroi.getInventario().get(0).getUnidade() >= valor) {
-			
-			int moeda = heroi.getInventario().get(0).getUnidade() - valor;
-			
-			heroi.getInventario().get(0).setUnidade(moeda);
-			
-			return true;
-		}
-		
-		else {
-			
-			return false;
-			
-		}
-		
+	public void adicionarItem(String nome, int quantidade) {
+		heroi.adicionarItem(new Item(nome, quantidade));
+	}
+	
+	public ObservableList<Item> getInventario(){
+		return heroi.getInventario();
 	}
 	
 	
-
+	
+	
+	
+	
 }
