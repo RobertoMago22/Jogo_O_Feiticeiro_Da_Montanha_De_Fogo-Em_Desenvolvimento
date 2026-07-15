@@ -1,91 +1,64 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-public class Heroi {
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+public class Heroi extends Personagem {
 	
-	private String nome;
-	private int vida;
-	private int forca;
-	private List<Item> inventario;
+	private final SimpleIntegerProperty moeda;
+	private ObservableList <Item> inventario;
 	
 	
 	public Heroi(String nome, int vida, int forca) {
-		this.nome = nome;
-		this.vida = vida;
-		this.forca = forca;
+		super(nome, vida, forca);
 		
-		inventario = new ArrayList<>();
-	}
-
-
-	public String getNome() {
-		return nome;
-	}
-
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-
-	public int getVida() {
-		return vida;
-	}
-
-
-	public void setVida(int vida) {
-		this.vida = vida;
-	}
-
-
-	public int getForca() {
-		return forca;
-	}
-
-
-	public void setForca(int forca) {
-		this.forca = forca;
+		this.moeda = new SimpleIntegerProperty(10);
+		this.inventario = FXCollections.observableArrayList(new Item("Poção de Cura", 5));
+		
 	}
 	
 	
-	public List<Item> getInventario() {
+	public ObservableList<Item> getInventario() {
 		return inventario;
 	}
 
 
-	public void setInventario(List<Item> inventario) {
+	public void setInventario(ObservableList<Item> inventario) {
 		this.inventario = inventario;
 	}
+
+
+	public void setMoeda(int moeda) {
+		this.moeda.set(moeda);
+	}
 	
+	public int getMoeda() {
+		return moeda.get();
+	}
 	
+	public SimpleIntegerProperty moedaProperty() {
+		return moeda;
+	}
+
+
 	public void adicionarItem(Item item) {
 		
 		inventario.add(item);
-		
 	}
 	
 	//Verificar
-	public void excluirItem(String nome) {
-		
-		for(Item item : inventario) {
-			
-			if(item.getNome().equals(nome)) {
+	public void excluirItem(Item item) {
 				
-				inventario.remove(item);
-				break;
-				
-			}
-			
-		}
-		
+		inventario.remove(item);		
 	}
-
 	
-	public void perdeVida() {
-		this.vida -= 2;
+	
+	public void usarItem(Item item) {
+		
+		item.setUnidade(item.getUnidade() - 1);
 	}
 	
 	
