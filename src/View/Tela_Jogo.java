@@ -1,185 +1,94 @@
 package View;
 
-import java.awt.CardLayout;
-import java.awt.EventQueue;
-import java.awt.GridLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-
 import Controller.Controller_Heroi;
-import Controller.Controller_Inimigo;
+import Controller.Controller_Tela;
+import Model.Item;
+import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+public class Tela_Jogo extends Application {
+	
+	private Controller_Heroi controllerHeroi;
+	private Controller_Tela controllerTela;
+	
+	@Override
 
+	public void start(Stage stage) {
+		
+		controllerHeroi = new Controller_Heroi();
+		controllerHeroi.criarHeroi("Henry", 100, 25);
+		
+		controllerTela = new Controller_Tela(controllerHeroi.getHeroi());
 
-public class Tela_Jogo extends JFrame {
+		StackPane janela = new StackPane();
+		janela.setStyle("-fx-background-color: black;");
 
+		GridPane telaC = new GridPane();
+		// Começo Tela Esquerda GridPane(0, 0)
+		
+		
+		telaC.add(controllerTela.getStatus(), 0, 0);
+		
+		// Fim da Tela Esquerda GridPane(0, 0)
+		
+		// Começo da Tela Esquerda GridPane(0, 1)
+		
+		VBox telaEsquerdaBaixo = new VBox(10);
+		
+		telaEsquerdaBaixo.setAlignment(Pos.CENTER);
+		
+		TableView<Item> inventario = new TableView<>();
+		//Continuar
+		Button usar = new Button("Usar");
+		
+		
+		
+		
+		telaEsquerdaBaixo.getChildren().addAll(usar, inventario);
+		
+		TableColumn<Item, String> colNome = new TableColumn<>("Nome");
+		colNome.setCellValueFactory(cellData -> cellData.getValue().nomeProperty());
+		
+		TableColumn<Item, Integer> colUnidade = new TableColumn<>("Quant.");
+		colUnidade.setCellValueFactory(cellData -> cellData.getValue().unidadeProperty().asObject());
+		
+		inventario.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+		
+		inventario.getColumns().addAll(colNome, colUnidade);
+		
+		inventario.setItems(controllerHeroi.getInventario());
+		
+		
+		telaC.add(telaEsquerdaBaixo, 0, 1);
+		
+		janela.getChildren().add(telaC);
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTable table;
+		Scene scene = new Scene(janela, 600, 600);
 
-	/**
+		stage.setScene(scene);
 
-	 * Launch the application.
+		stage.setTitle("Teste");
 
-	 */
+		stage.show();
+
+	}
 
 	public static void main(String[] args) {
 
-		EventQueue.invokeLater(new Runnable() {
-
-			public void run() {
-
-				try {
-
-					Tela_Jogo frame = new Tela_Jogo();
-
-					//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-					frame.setVisible(true);
-
-				} catch (Exception e) {
-
-					e.printStackTrace();
-
-				}
-
-			}
-
-		});
+		launch(args);
 
 	}
-
-
-
-	/**
-
-	 * Create the frame.
-
-	 */
-
-	public Tela_Jogo() {
-
-		setResizable(false);
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-
-		setBounds(100, 100, 800, 1000);
-
-		contentPane = new JPanel();
-
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-
-		contentPane.setLayout(new CardLayout(0, 0));
-
-		
-		Controller_Heroi controllerHeroi = new Controller_Heroi();
-
-		controllerHeroi.criarHeroi("Aragorn", 30, 20);
-
-
-		Controller_Inimigo controllerInimigo = new Controller_Inimigo();
-
-		
-		JPanel panel = new JPanel();
-
-		contentPane.add(panel, "name_6600797548400");
-
-		panel.setLayout(new GridLayout(1, 3, 0, 0));
-
-		
-
-		JPanel panelEsquerda = new JPanel();
-		panel.add(panelEsquerda);
-		panelEsquerda.setLayout(new GridLayout(2, 1, 0, 0));
-
-		
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBorder(new TitledBorder(null, "INVENTÁRIO", TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		panelEsquerda.add(scrollPane);
-
-		
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("Item");
-		model.addColumn("Quantidades");
-
-		
-
-		table = new JTable(model);
-
-		scrollPane.setViewportView(table);
-
-		
-		JPanel panel_5 = new JPanel();
-		panelEsquerda.add(panel_5);
-
-	
-		/*ImageIcon teste = new ImageIcon(getClass().getResource("/Imagens/Entrada_Caverna.png"));
-
-		Image imagem = teste.getImage();
-
-		JPanel panelCentro = new JPanel() {
-
-			
-
-			@Override
-
-		    protected void paintComponent(Graphics g) {
-
-		        super.paintComponent(g);
-
-
-
-		        g.drawImage(
-
-		            imagem,
-
-		            0, 0,
-
-		            getWidth(), getHeight(),
-
-		            this
-
-		        );
-
-		}
-
-		
-
-		};
-
-		panel.add(panelCentro);*/
-
-		JPanel panelCentro = new JPanel();
-		
-		panel.add(panelCentro);
-		
-
-		JPanel panelDireita = new JPanel();
-
-		panel.add(panelDireita);
-
-		
-
-		JPanel panel_1 = new JPanel();
-
-		contentPane.add(panel_1, "name_6672811809400");
-
-
-
-	}
-
-
 
 }
-
