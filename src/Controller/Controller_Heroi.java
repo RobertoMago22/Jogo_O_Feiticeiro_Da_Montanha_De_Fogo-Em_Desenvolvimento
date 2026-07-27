@@ -36,6 +36,14 @@ public class Controller_Heroi {
 		heroi.adicionarItem(new Item(nome, quantidade));
 	}
 	
+	public void excluirItem(Item item) {
+		
+		if(item.getUnidade() == 0) {
+			
+			heroi.excluirItem(item);
+		}
+	}
+	
 	public ObservableList<Item> getInventario(){
 		return heroi.getInventario();
 	}
